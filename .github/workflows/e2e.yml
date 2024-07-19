@@ -20,6 +20,30 @@ jobs:
                   echo "REGISTRATION_TOKEN=$registration_token" >> $GITHUB_OUTPUT
               env:
                 GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-            - name: Test
-              run: echo ${{ steps.get_registration_token.outputs.REGISTRATION_TOKEN }}
+
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                  terraform_version: 1.5.7
+              
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-region: eu-west-1
+                role-to-assume: ${{ secrets.AWS_ROLE }}
+                role-session-name: OIDCSession
+                
+            - name: Run terraform init
+              run: |
+                cd self-hosted-runner 
+                terraform init \
+                  -backend-config "bucket=pantos-staging-environment-data" \
+                  -backend-config "region=eu-central-1" \
+                  -backend-config "key=terraform-state-file/self-hosted-runner.tfstate" \
+                  -backend-config "dynamodb_table=terraform-state-lock-table" \
+                  -backend-config "encrypt=true" \
+                  -reconfigure
+
+            # - name: Test
+            #   run: echo ${{ steps.get_registration_token.outputs.REGISTRATION_TOKEN }}
             #TODO: Checkout repo, get the token, spin up Ec2
