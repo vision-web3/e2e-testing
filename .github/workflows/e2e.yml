@@ -8,7 +8,6 @@ on:
 jobs:
     setup-runner:
         runs-on: ubuntu-latest
-        permissions: write-all
         steps:
             - uses: actions/checkout@v4
             - name: Get Registration Token
