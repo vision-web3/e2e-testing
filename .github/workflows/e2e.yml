@@ -11,13 +11,15 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             - name: Get Registration Token
+              id: get_registration_token
               run: |
                 registration_token=$(gh api --method POST \
                   -H "Accept: application/vnd.github+json" \
                   -H "X-GitHub-Api-Version: 2022-11-28" \
                   /repos/pantos-io/e2e-testing/actions/runners/registration-token | jq -r .token)
+                  echo "REGISTRATION_TOKEN=$registration_token" >> $GITHUB_OUTPUT
               env:
                 GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
             - name: Test
-              run: echo $registration_token
+              run: echo ${{ steps.get_registration_token.outputs.REGISTRATION_TOKEN }}
             #TODO: Checkout repo, get the token, spin up Ec2
