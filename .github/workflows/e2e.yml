@@ -1,0 +1,21 @@
+name: Run E2E tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+    setup-runner:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Get Registration Token
+              run: |
+                echo gh api --method POST \
+                  -H "Accept: application/vnd.github+json" \
+                  -H "X-GitHub-Api-Version: 2022-11-28" \
+                  /repos/pantos-io/e2e-testing/actions/runners/registration-token
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            #TODO: Checkout repo, get the token, spin up Ec2
