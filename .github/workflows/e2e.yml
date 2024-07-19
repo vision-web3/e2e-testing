@@ -16,7 +16,8 @@ jobs:
                   -H "Accept: application/vnd.github+json" \
                   -H "X-GitHub-Api-Version: 2022-11-28" \
                   /repos/pantos-io/e2e-testing/actions/runners/registration-token | jq -r .token)
-                echo "REGISTRATION_TOKEN=$registration_token"
               env:
                 GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+            - name: Test
+              run: echo $registration_token
             #TODO: Checkout repo, get the token, spin up Ec2
