@@ -1,0 +1,126 @@
+name: Run E2E Tests
+description: Run end-to-end tests for Pantos
+inputs:
+  ethereum-contracts-version:
+    description: 'The version of the ethereum-contracts repository to use'
+    required: false
+    default: ''
+  servicenode-version:
+    description: 'The version of the servicenode images to use. Use local if you want to use locally built images'
+    required: false
+    default: ''
+  validatornode-version:
+    description: 'The version of the validatornode repository to use'
+    required: false
+    default: ''
+  ethereum-contracts-path:
+    description: 'The path to the ethereum-contracts repository'
+    required: false
+    default: ${{ github.workspace }}/ethereum-contracts
+  servicenode-path:
+    description: 'The path to the servicenode repository'
+    required: false
+    default: ${{ github.workspace }}/servicenode
+  validatornode-path:
+    description: 'The path to the validatornode repository'
+    required: false
+    default: ${{ github.workspace }}/validatornode
+
+runs:
+  using: 'composite'
+
+  steps:
+    - name: Set environment variables
+      shell: bash
+      run: |
+        echo "PANTOS_ETHEREUM_CONTRACTS=${{ inputs.ethereum-contracts-path }}" >> $GITHUB_ENV
+        echo "PANTOS_SERVICE_NODE=${{ inputs.servicenode-path }}" >> $GITHUB_ENV
+        echo "PANTOS_VALIDATOR_NODE=${{ inputs.validatornode-path }}" >> $GITHUB_ENV
+        echo "PANTOS_E2E_TESTS=${{ github.workspace }}/e2e-tests" >> $GITHUB_ENV
+
+    - uses: actions/checkout@v4
+      with:
+        path: ${{ env.PANTOS_E2E_TESTS }}
+
+    - uses: pantos-io/ci-workflows/.github/actions/install-python-deps@v1
+      with:
+        working-directory: ${{ env.PANTOS_E2E_TESTS }}
+
+    - name: Check for folder existence
+      shell: bash
+      id: check-folder
+      run: |
+        echo "PANTOS_ETHEREUM_CONTRACTS_EXISTS=$(test -d ${{ env.PANTOS_ETHEREUM_CONTRACTS }} && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "PANTOS_SERVICE_NODE_EXISTS=$(test -d ${{ env.PANTOS_SERVICE_NODE }} && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "PANTOS_VALIDATOR_NODE_EXISTS=$(test -d ${{ env.PANTOS_VALIDATOR_NODE }} && echo true || echo false)" >> $GITHUB_OUTPUT
+
+    - uses: actions/checkout@v4
+      if: steps.check-folder.outputs.PANTOS_ETHEREUM_CONTRACTS_EXISTS == 'false'
+      with:
+        repository: pantos-io/ethereum-contracts
+        path: ${{ env.PANTOS_ETHEREUM_CONTRACTS }}
+        sparse-checkout: |
+          docker-compose.yml
+          Makefile
+
+    - uses: actions/checkout@v4
+      if: steps.check-folder.outputs.PANTOS_SERVICE_NODE_EXISTS == 'false'
+      with:
+        repository: pantos-io/servicenode
+        path: ${{ env.PANTOS_SERVICE_NODE }}
+        sparse-checkout: |
+          docker-compose.yml
+          docker-compose.override.yml
+          Makefile
+
+    - uses: actions/checkout@v4
+      if: steps.check-folder.outputs.PANTOS_VALIDATOR_NODE_EXISTS == 'false'
+      with:
+        repository: pantos-io/validatornode
+        path: ${{ env.PANTOS_VALIDATOR_NODE }}
+        sparse-checkout: |
+          docker-compose.yml
+          docker-compose.override.yml
+          Makefile
+
+    - name: Create local signer_key
+      shell: bash
+      run: |
+        ssh-keygen -t ed25519 -f signer_key.pem -N ''
+        chmod 777 signer_key.pem
+      working-directory: ${{ env.PANTOS_SERVICE_NODE }}
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3.3.0
+      id: buildx
+
+    - name: Cache Docker layers
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-v1.0-e2e-test-${{ github.ref_name }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-v1.0-test-
+
+    - name: Check docker config and disable live reload
+      shell: bash
+      run: |
+        cat /etc/docker/daemon.json
+        echo '{ "live-restore": false }' | sudo tee /etc/docker/daemon.json
+        sudo systemctl reload docker
+        make check-swarm-init
+      working-directory: ${{ env.PANTOS_E2E_TESTS }}
+
+    - name: Run Tests
+      shell: bash
+      run: |
+        make test
+      working-directory: ${{ env.PANTOS_E2E_TESTS }}
+      env:
+        PANTOS_ETHEREUM_CONTRACTS_VERSION: ${{ inputs.ethereum-contracts-version }}
+        PANTOS_SERVICE_NODE_VERSION: ${{ inputs.servicenode-version }}
+        PANTOS_VALIDATOR_NODE_VERSION: ${{ inputs.validatornode-version }}
+
