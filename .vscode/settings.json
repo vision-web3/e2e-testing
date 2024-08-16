@@ -1,0 +1,14 @@
+{
+    "editor.formatOnSave": true,
+    "files.autoSave": "onFocusChange",
+    "python.testing.pytestArgs": [],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.testing.cwd": "${workspaceFolder}/tests",
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    "prettier.requireConfig": true,
+    "prettier.yamlSpacing": true,
+    "[yaml]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+}
