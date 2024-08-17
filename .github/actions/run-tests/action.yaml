@@ -46,7 +46,7 @@ runs:
       with:
         path: ${{ env.PANTOS_E2E_TESTS }}
         repository: pantos-io/e2e-testing
-        ref: ${{ github.repository == "pantos-io/e2e-testing" && github.ref || 'main' }}
+        ref: ${{ github.repository == 'pantos-io/e2e-testing' && github.ref || 'main' }}
 
     - uses: pantos-io/ci-workflows/.github/actions/install-python-deps@v1
       with:
