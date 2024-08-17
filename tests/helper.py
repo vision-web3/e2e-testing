@@ -2,7 +2,6 @@ import glob
 import os
 import pathlib
 import subprocess
-import sys
 import dotenv
 import pantos.client.library.configuration as pc_conf
 import concurrent.futures

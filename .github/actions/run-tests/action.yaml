@@ -25,6 +25,10 @@ inputs:
     description: 'The path to the validatornode repository'
     required: false
     default: ${{ github.workspace }}/validatornode
+  no-setup:
+    description: 'Skip the setup steps'
+    required: false
+    default: false
 
 runs:
   using: 'composite'
@@ -47,6 +51,7 @@ runs:
         working-directory: ${{ env.PANTOS_E2E_TESTS }}
 
     - name: Check for folder existence
+      if: inputs.no-setup == 'false'
       shell: bash
       id: check-folder
       run: |
@@ -55,7 +60,7 @@ runs:
         echo "PANTOS_VALIDATOR_NODE_EXISTS=$(test -d ${{ env.PANTOS_VALIDATOR_NODE }} && echo true || echo false)" >> $GITHUB_OUTPUT
 
     - uses: actions/checkout@v4
-      if: steps.check-folder.outputs.PANTOS_ETHEREUM_CONTRACTS_EXISTS == 'false'
+      if: inputs.no-setup == 'false' && steps.check-folder.outputs.PANTOS_ETHEREUM_CONTRACTS_EXISTS == 'false'
       with:
         repository: pantos-io/ethereum-contracts
         path: ${{ env.PANTOS_ETHEREUM_CONTRACTS }}
@@ -64,7 +69,7 @@ runs:
           Makefile
 
     - uses: actions/checkout@v4
-      if: steps.check-folder.outputs.PANTOS_SERVICE_NODE_EXISTS == 'false'
+      if: inputs.no-setup == 'false' && steps.check-folder.outputs.PANTOS_SERVICE_NODE_EXISTS == 'false'
       with:
         repository: pantos-io/servicenode
         path: ${{ env.PANTOS_SERVICE_NODE }}
@@ -74,7 +79,7 @@ runs:
           Makefile
 
     - uses: actions/checkout@v4
-      if: steps.check-folder.outputs.PANTOS_VALIDATOR_NODE_EXISTS == 'false'
+      if: inputs.no-setup == 'false' && steps.check-folder.outputs.PANTOS_VALIDATOR_NODE_EXISTS == 'false'
       with:
         repository: pantos-io/validatornode
         path: ${{ env.PANTOS_VALIDATOR_NODE }}
@@ -84,6 +89,7 @@ runs:
           Makefile
 
     - name: Create local signer_key
+      if: inputs.no-setup == 'false'
       shell: bash
       run: |
         ssh-keygen -t ed25519 -f signer_key.pem -N ''
@@ -91,13 +97,16 @@ runs:
       working-directory: ${{ env.PANTOS_SERVICE_NODE }}
 
     - name: Set up QEMU
+      if: inputs.no-setup == 'false'
       uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
       
     - name: Set up Docker Buildx
+      if: inputs.no-setup == 'false'
       uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3.3.0
       id: buildx
 
     - name: Cache Docker layers
+      if: inputs.no-setup == 'false'
       uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
@@ -106,6 +115,7 @@ runs:
           ${{ runner.os }}-buildx-v1.0-test-
 
     - name: Check docker config and disable live reload
+      if: inputs.no-setup == 'false'
       shell: bash
       run: |
         cat /etc/docker/daemon.json
