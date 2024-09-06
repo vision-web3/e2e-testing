@@ -47,9 +47,10 @@ bandit-check:
 # ACTIONS_RUNNER_DEBUG is used in github actions
 .PHONY: test
 test:
-	@if [ "$(DEBUG)" = "true" ] || [ "$(ACTIONS_RUNNER_DEBUG)" = "true" ]; then \
+	@if [ "$(DEBUG)" = "true" ] || [ "$(CI)" = "true" ]; then \
         export DEBUG=true; \
         LOG_LEVEL="--log-cli-level=debug"; \
+        echo "Running tests with debug output"; \
     else \
         LOG_LEVEL=""; \
     fi; \
@@ -60,6 +61,7 @@ coverage:
 	@if [ "$(DEBUG)" = "true" ] || [ "$(CI)" = "true" ]; then \
         export DEBUG=true; \
         LOG_LEVEL="--log-cli-level=debug"; \
+        echo "Running tests with debug output"; \
     else \
         LOG_LEVEL=""; \
     fi; \
