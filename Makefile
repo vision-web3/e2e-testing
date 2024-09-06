@@ -57,7 +57,7 @@ test:
 
 .PHONY: coverage
 coverage:
-	@if [ "$(DEBUG)" = "true" ] || [ "$(ACTIONS_RUNNER_DEBUG)" = "true" ]; then \
+	@if [ "$(DEBUG)" = "true" ] || [ "$(CI)" = "true" ]; then \
         export DEBUG=true; \
         LOG_LEVEL="--log-cli-level=debug"; \
     else \
