@@ -67,35 +67,35 @@ def configure_nodes(config, stack_id):
     # Configure Ethereum contracts
     if 'ethereum_contracts' in config:
         ethereum_contracts_command = 'make docker-local'
-        env_vars = {'DOCKER_TAG': pantos_ethereum_contracts_version, 'STACK_IDENTIFIER': stack_id, 'ARGS': '--no-build'}
+        ethereum_contracts_env_vars = {'DOCKER_TAG': pantos_ethereum_contracts_version, 'STACK_IDENTIFIER': stack_id, 'ARGS': '--no-build'}
     else:
         ethereum_contracts_command = 'make docker-remove'
-        env_vars = {'STACK_IDENTIFIER': stack_id}
-    run_command(ethereum_contracts_command, pantos_ethereum_contracts_dir, env_vars)
+        ethereum_contracts_env_vars = {'STACK_IDENTIFIER': stack_id}
+    run_command(ethereum_contracts_command, pantos_ethereum_contracts_dir, ethereum_contracts_env_vars)
 
     # Configure Service Node
     if 'service_node' in config:
         instance_count = config['service_node'].get('instance_count', 1)
         service_node_command = f'make docker INSTANCE_COUNT="{instance_count}"'
         # TODO: Allow service nodes to support multiple networks?
-        env_vars = {'DOCKER_TAG': pantos_service_node_version, 'STACK_IDENTIFIER': stack_id, 'ETHEREUM_NETWORK': '1', 'NO_BUILD': 'true'}
+        service_node_env_vars = {'DOCKER_TAG': pantos_service_node_version, 'STACK_IDENTIFIER': stack_id, 'ETHEREUM_NETWORK': '1', 'NO_BUILD': 'true'}
     else:
         service_node_command = 'make docker-remove'
-        env_vars = {'STACK_IDENTIFIER': stack_id}
+        service_node_env_vars = {'STACK_IDENTIFIER': stack_id}
 
     # Configure Validator Node
     if 'validator_node' in config:
         instance_count = config['validator_node'].get('instance_count', 1)
         validator_node_command = f'make docker INSTANCE_COUNT="{instance_count}"'
-        env_vars = {'DOCKER_TAG': pantos_validator_node_version, 'STACK_IDENTIFIER': stack_id, 'ETHEREUM_NETWORK': '1', 'NO_BUILD': 'true'}
+        validator_node_env_vars = {'DOCKER_TAG': pantos_validator_node_version, 'STACK_IDENTIFIER': stack_id, 'ETHEREUM_NETWORK': '1', 'NO_BUILD': 'true'}
     else:
         validator_node_command = 'make docker-remove'
-        env_vars = {'STACK_IDENTIFIER': stack_id}
+        validator_node_env_vars = {'STACK_IDENTIFIER': stack_id}
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [
-            executor.submit(run_command, validator_node_command, pantos_validator_node_dir, env_vars),
-            executor.submit(run_command, service_node_command, pantos_service_node_dir, env_vars),
+            executor.submit(run_command, service_node_command, pantos_service_node_dir, service_node_env_vars),
+            executor.submit(run_command, validator_node_command, pantos_validator_node_dir, validator_node_env_vars),
         ]
         concurrent.futures.wait(futures)
 
