@@ -137,4 +137,4 @@ runs:
         PANTOS_ETHEREUM_CONTRACTS_VERSION: ${{ inputs.ethereum-contracts-version }}
         PANTOS_SERVICE_NODE_VERSION: ${{ inputs.servicenode-version }}
         PANTOS_VALIDATOR_NODE_VERSION: ${{ inputs.validatornode-version }}
-
+        CI: true
