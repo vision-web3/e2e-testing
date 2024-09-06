@@ -78,6 +78,7 @@ runs:
         sparse-checkout: |
           docker-compose.yml
           docker-compose.override.yml
+          service-node-config.docker.env
           Makefile
 
     - uses: actions/checkout@v4
@@ -88,6 +89,7 @@ runs:
         sparse-checkout: |
           docker-compose.yml
           docker-compose.override.yml
+          validator-node-config.docker.env
           Makefile
 
     - name: Create local signer_key
