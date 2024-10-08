@@ -23,9 +23,9 @@ def run_command(command, cwd, env_vars):
 
 def configure_nodes(config, stack_id):
     pantos_ethereum_contracts_dir = os.getenv('PANTOS_ETHEREUM_CONTRACTS')
-    pantos_ethereum_contracts_version = os.getenv('PANTOS_ETHEREUM_CONTRACTS_VERSION', '1.1.2')
+    pantos_ethereum_contracts_version = os.getenv('PANTOS_ETHEREUM_CONTRACTS_VERSION', 'development')
     if not pantos_ethereum_contracts_version or pantos_ethereum_contracts_version == '':
-        pantos_ethereum_contracts_version = '1.1.2'
+        pantos_ethereum_contracts_version = 'development'
     pantos_service_node_dir = os.getenv('PANTOS_SERVICE_NODE')
     pantos_service_node_version = os.getenv('PANTOS_SERVICE_NODE_VERSION', 'development')
     if not pantos_service_node_version or pantos_service_node_version == '':
