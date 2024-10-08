@@ -106,7 +106,7 @@ def configure_client(stack_id, instance = 1):
     current_dir = os.path.dirname(os.path.realpath(__file__))
 
     # TODO: Return one library instance per instance from the stack id
-    for file in [f'{contracts_dir}/data/*{stack_id}-{instance}/eth/all.env', f'{current_dir}/../base.env']:
+    for file in [f'{contracts_dir}/data/*{stack_id}-{instance}/*/all.env', f'{current_dir}/../base.env']:
         resolved_path = glob.glob(file)
         if not resolved_path:
             raise FileNotFoundError(f'Environment path {file} not found')
