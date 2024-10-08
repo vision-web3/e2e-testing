@@ -1866,90 +1866,27 @@ files = [
 
 [[package]]
 name = "pantos-client-library"
-version = "2.0.0"
+version = "2.0.1"
 description = "Client library for engaging with the Pantos system"
 optional = false
-python-versions = "<4.0,>=3.10"
-files = [
-    {file = "pantos_client_library-2.0.0-py3-none-any.whl", hash = "sha256:d3a871d03a0adefadd14faf0df43cc9f8deb60bee02f7c6090d2d2c70bf21601"},
-    {file = "pantos_client_library-2.0.0.tar.gz", hash = "sha256:b9d9512e9b5871df98a3135ae3407cc2ffb3b48cd874264e98a557b4790220ab"},
-]
+python-versions = "^3.10"
+files = []
+develop = false
 
 [package.dependencies]
-aiohappyeyeballs = {version = "2.4.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-aiohttp = {version = "3.10.5", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-aiosignal = {version = "1.3.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-amqp = {version = "5.2.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-aniso8601 = {version = "9.0.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-annotated-types = {version = "0.7.0", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-attrs = {version = "24.2.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-billiard = {version = "4.2.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-bitarray = {version = "2.9.2", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-blinker = {version = "1.8.2", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-celery = {version = "5.3.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-cerberus = {version = "1.3.4", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-certifi = {version = "2024.8.30", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-charset-normalizer = {version = "3.3.2", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-ckzg = {version = "2.0.1", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-click = {version = "8.1.7", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-click-didyoumean = {version = "0.3.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-click-plugins = {version = "1.1.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-click-repl = {version = "0.3.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-colorama = {version = "0.4.6", markers = "python_version >= \"3.10\" and python_version < \"4.0\" and platform_system == \"Windows\""}
-cytoolz = {version = "0.12.3", markers = "python_version >= \"3.10\" and python_version < \"4\" and implementation_name == \"cpython\""}
-eth-abi = {version = "5.1.0", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-eth-account = {version = "0.13.0", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-eth-hash = {version = "0.7.0", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-eth-keyfile = {version = "0.8.1", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-eth-keys = {version = "0.4.0", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-eth-rlp = {version = "2.1.0", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-eth-typing = {version = "3.5.2", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-eth-utils = {version = "2.3.1", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-flask = {version = "3.0.3", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-flask-restful = {version = "0.3.10", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-frozenlist = {version = "1.4.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-hexbytes = {version = "1.2.1", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-idna = {version = "3.10", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-itsdangerous = {version = "2.2.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-jinja2 = {version = "3.1.4", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-json-log-formatter = {version = "0.5.2", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-jsonschema = {version = "4.23.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-jsonschema-specifications = {version = "2023.12.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-kombu = {version = "5.4.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-lru-dict = {version = "1.3.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-markupsafe = {version = "2.1.5", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-multidict = {version = "6.1.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-pantos-common = {version = "3.0.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-parsimonious = {version = "0.10.0", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-prompt-toolkit = {version = "3.0.47", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-protobuf = {version = "5.28.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-pyaml-env = {version = "1.2.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-pycryptodome = {version = "3.20.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-pydantic = {version = "2.9.2", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-pydantic-core = {version = "2.23.4", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-python-dateutil = {version = "2.9.0.post0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-python-dotenv = {version = "1.0.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-pytz = {version = "2024.2", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-pywin32 = {version = "306", markers = "python_version >= \"3.10\" and python_version < \"4.0\" and platform_system == \"Windows\""}
-pyyaml = {version = "6.0.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-referencing = {version = "0.35.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-regex = {version = "2024.9.11", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-requests = {version = "2.32.3", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-rlp = {version = "3.0.0", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-rpds-py = {version = "0.20.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-semantic-version = {version = "2.10.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-setuptools = {version = "75.1.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-six = {version = "1.16.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-toolz = {version = "0.12.1", markers = "python_version >= \"3.10\" and python_version < \"4\" and (implementation_name == \"pypy\" or implementation_name == \"cpython\")"}
-typing-extensions = {version = "4.12.2", markers = "python_version >= \"3.10\" and python_version < \"4\""}
-tzdata = {version = "2024.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-urllib3 = {version = "2.2.3", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-vine = {version = "5.1.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-wcwidth = {version = "0.2.13", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-web3 = {version = "6.5.0", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-websockets = {version = "13.0.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-werkzeug = {version = "3.0.4", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
-yarl = {version = "1.11.1", markers = "python_version >= \"3.10\" and python_version < \"4.0\""}
+Cerberus = "1.3.4"
+hexbytes = "1.2.1"
+pantos-common = "3.0.0"
+pyaml-env = "1.2.1"
+python-dotenv = "1.0.1"
+PyYAML = "6.0.1"
+requests = "2.32.3"
+semantic-version = "2.10.0"
+web3 = "6.5.0"
+
+[package.source]
+type = "directory"
+url = "../client-library"
 
 [[package]]
 name = "pantos-common"
@@ -3334,4 +3271,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "7a186c04acf2ca89ef37b2e39570070e30f2eed56ea866a7c5024ac012cdfbe7"
+content-hash = "47252d7895f067c0420cfe25d671e47e2e89c436ab9f37b9d29a38c03fa23a7b"
