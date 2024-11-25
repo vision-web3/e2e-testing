@@ -68,6 +68,8 @@ runs:
         path: ${{ env.PANTOS_ETHEREUM_CONTRACTS }}
         sparse-checkout: |
           docker-compose.yml
+          docker-compose.ci.yml
+          docker-compose.local.yml
           Makefile
 
     - uses: actions/checkout@v4

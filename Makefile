@@ -1,5 +1,6 @@
 PYTHON_FILES := tests
 MAX_CONCURRENCY ?= 1
+SHELL := $(shell which bash)
 
 check-swarm-init:
 	@if [ "$$(docker info --format '{{.Swarm.LocalNodeState}}')" != "active" ]; then \
