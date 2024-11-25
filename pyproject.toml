@@ -5,7 +5,6 @@ description = "Pantos End to End tests"
 authors = ["Pantos GmbH <contact@pantos.io>"]
 license = "GPL-3.0-only"
 readme = "README.md"
-package-mode = false
 
 [tool.poetry.group.test.dependencies]
 pytest = "8.2.2"
@@ -26,7 +25,7 @@ pre-commit = "3.7.1"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-pantos-client-library = "^1.1.4"
+pantos-client-library = "^3.0.1"
 pytest-ordering = "^0.6"
 pytest-xdist = "^3.6.1"
 pytest-timeout = "^2.3.1"

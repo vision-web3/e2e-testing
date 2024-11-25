@@ -46,7 +46,7 @@ def test_retrieve_service_node_bids():
     try:
         service_node_bids = pc.retrieve_service_node_bids(pc.Blockchain.ETHEREUM,
                                                           pc.Blockchain.BNB_CHAIN, False)
-        assert service_node_bids is not None
+        assert service_node_bids != {}
         print(f'Service node bids: {service_node_bids}')
     except pc.PantosClientError:
         pytest.fail("PantosClientError raised")

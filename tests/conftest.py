@@ -40,7 +40,7 @@ def stack_id():
 # Temporary until we can fix the naming scheme in the configuration
 env_mapping = {
     'eth': 'ethereum',
-    'bnb': 'bnb',
+    'bnb': 'bnb_chain',
 }
 
 chain_mapping = {
