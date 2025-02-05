@@ -29,6 +29,14 @@ inputs:
     description: 'Skip the setup steps'
     required: false
     default: false
+  bnb-config:
+    description: 'Path to BNB anvil config to import by SN'
+    required: false
+    default: '/tmp/BNB_CHAIN.env'
+  eth-config:
+    description: 'Path to ETH anvil config to import by SN'
+    required: false
+    default: '/tmp/ETH_CHAIN.env'
 
 runs:
   using: 'composite'
@@ -41,6 +49,8 @@ runs:
         echo "PANTOS_SERVICE_NODE=${{ inputs.servicenode-path }}" >> $GITHUB_ENV
         echo "PANTOS_VALIDATOR_NODE=${{ inputs.validatornode-path }}" >> $GITHUB_ENV
         echo "PANTOS_E2E_TESTS=${{ github.workspace }}/e2e-tests" >> $GITHUB_ENV
+        echo "PANTOS_BNB_CONFIG_TESTS=${{ inputs.bnb-config }}" >> $GITHUB_ENV
+        echo "PANTOS_ETH_CONFIG_TESTS=${{ inputs.eth-config }}" >> $GITHUB_ENV
 
     - uses: actions/checkout@v4
       with:
@@ -81,6 +91,7 @@ runs:
           docker-compose.yml
           docker-compose.override.yml
           service-node-config.docker.env
+          bids.yml
           Makefile
 
     - uses: actions/checkout@v4
