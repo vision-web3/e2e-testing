@@ -124,8 +124,8 @@ runs:
       if: inputs.no-setup == 'false'
       shell: bash
       run: |
-        if [ -f /etc/docker/daemon.json ]; then cat /etc/docker/daemon.json; fi
         echo '{ "live-restore": false }' | sudo tee /etc/docker/daemon.json
+        cat /etc/docker/daemon.json
         sudo systemctl reload docker
         make check-swarm-init
       working-directory: ${{ env.PANTOS_E2E_TESTS }}

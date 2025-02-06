@@ -24,7 +24,7 @@ yapf = "0.40.2"
 pre-commit = "3.7.1"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.13"
 pantos-client-library = "4.0.0"
 pytest-ordering = "^0.6"
 pytest-xdist = "^3.6.1"
