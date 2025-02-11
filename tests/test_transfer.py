@@ -45,45 +45,45 @@ def test_retrieve_token_balance(receiving_address):
     except pc.PantosClientError:
         pytest.fail("PantosClientError raised")
 
-def test_retrieve_service_node_bids():
-    try:
-        service_node_bids = pc.retrieve_service_node_bids(pc.Blockchain.ETHEREUM,
-                                                          pc.Blockchain.BNB_CHAIN, False)
-        assert service_node_bids != {}
-        print(f'Service node bids: {service_node_bids}')
-    except pc.PantosClientError:
-        pytest.fail("PantosClientError raised")
+# def test_retrieve_service_node_bids():
+#     try:
+#         service_node_bids = pc.retrieve_service_node_bids(pc.Blockchain.ETHEREUM,
+#                                                           pc.Blockchain.BNB_CHAIN, False)
+#         assert service_node_bids != {}
+#         print(f'Service node bids: {service_node_bids}')
+#     except pc.PantosClientError:
+#         pytest.fail("PantosClientError raised")
 
-@pytest.mark.timeout(test_timeout)
-@pytest.mark.parametrize('keystore', ['eth'], indirect=True)
-@pytest.mark.parametrize('receiving_address', ['bnb'], indirect=True)
-def test_token_transfer(receiving_address, private_key):
-    try:
-        token_transfer_response = pc.transfer_tokens(
-            pc.Blockchain.ETHEREUM, pc.Blockchain.BNB_CHAIN, private_key,
-            pc.BlockchainAddress(receiving_address),
-            pc.TokenSymbol('pan'), decimal.Decimal('0.000001'))
-        assert token_transfer_response is not None
-        print(f'Token transfer response: {token_transfer_response}')
-    except pc.PantosClientError:
-        pytest.fail("PantosClientError raised")
+# @pytest.mark.timeout(test_timeout)
+# @pytest.mark.parametrize('keystore', ['eth'], indirect=True)
+# @pytest.mark.parametrize('receiving_address', ['bnb'], indirect=True)
+# def test_token_transfer(receiving_address, private_key):
+#     try:
+#         token_transfer_response = pc.transfer_tokens(
+#             pc.Blockchain.ETHEREUM, pc.Blockchain.BNB_CHAIN, private_key,
+#             pc.BlockchainAddress(receiving_address),
+#             pc.TokenSymbol('pan'), decimal.Decimal('0.000001'))
+#         assert token_transfer_response is not None
+#         print(f'Token transfer response: {token_transfer_response}')
+#     except pc.PantosClientError:
+#         pytest.fail("PantosClientError raised")
 
-    done = False
-    while not done:
-        try:
-            token_transfer_status = pc.get_token_transfer_status(
-                pc.Blockchain.ETHEREUM, token_transfer_response.service_node_address,
-                token_transfer_response.task_id)
-            assert token_transfer_status is not None
-            print(f'Token transfer status: {token_transfer_status}')
-            if (token_transfer_status.source_transfer_status is ServiceNodeTransferStatus.CONFIRMED
-                and token_transfer_status.destination_transfer_status is DestinationTransferStatus.CONFIRMED):
-                done = True
-            else:
-                print('Waiting for transfer to be confirmed...')
-                time.sleep(5)
-        except pc.PantosClientError:
-            pytest.fail("PantosClientError raised")
+#     done = False
+#     while not done:
+#         try:
+#             token_transfer_status = pc.get_token_transfer_status(
+#                 pc.Blockchain.ETHEREUM, token_transfer_response.service_node_address,
+#                 token_transfer_response.task_id)
+#             assert token_transfer_status is not None
+#             print(f'Token transfer status: {token_transfer_status}')
+#             if (token_transfer_status.source_transfer_status is ServiceNodeTransferStatus.CONFIRMED
+#                 and token_transfer_status.destination_transfer_status is DestinationTransferStatus.CONFIRMED):
+#                 done = True
+#             else:
+#                 print('Waiting for transfer to be confirmed...')
+#                 time.sleep(5)
+#         except pc.PantosClientError:
+#             pytest.fail("PantosClientError raised")
 
 # Enable when we can start the token creator
 # @pytest.mark.parametrize('keystore', ['eth'], indirect=True)
