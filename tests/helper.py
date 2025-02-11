@@ -44,7 +44,7 @@ def configure_nodes(config, stack_id):
     if not config:
         print('Tearing down the environment')
         import subprocess
-        print(subprocess.call(['docker', 'ps']))
+        print(">>", subprocess.call(['docker', 'ps']))
         # Dump all the logs
         env_vars = {'STACK_IDENTIFIER': stack_id}
         with concurrent.futures.ThreadPoolExecutor() as executor:
