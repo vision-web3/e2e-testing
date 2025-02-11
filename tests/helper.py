@@ -47,7 +47,7 @@ def configure_nodes(config, stack_id):
         env_vars = {'STACK_IDENTIFIER': stack_id}
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [
-                executor.submit(run_command, 'docker ps', '', ''),
+                executor.submit(run_command, 'docker ps', None, {}),
                 executor.submit(run_command, 'make docker-logs', pantos_validator_node_dir, env_vars),
                 executor.submit(run_command, 'make docker-logs', pantos_service_node_dir, env_vars),
                 executor.submit(run_command, 'make docker-logs', pantos_ethereum_contracts_dir, env_vars)
