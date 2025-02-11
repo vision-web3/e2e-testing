@@ -48,6 +48,7 @@ chain_mapping = {
     'bnb': pc.Blockchain.BNB_CHAIN,
 }
 
+
 @pytest.fixture
 def keystore(request, stack_id):
     global existing_env_check
@@ -77,13 +78,15 @@ def keystore(request, stack_id):
         keystore = keystore_file.read()
     return (keystore, network)
 
+
 @pytest.fixture
 def private_key(keystore):
     # Decrypt private key
     global chain_mapping
     private_key = pc.decrypt_private_key(chain_mapping[keystore[1]], keystore[0], '')
     return private_key
-    
+
+
 def configure_existing_environment():
     global existing_env_check
     if not os.getenv('PANTOS_ENV_FILE'):
@@ -91,9 +94,9 @@ def configure_existing_environment():
     file = os.getenv('PANTOS_ENV_FILE')
     if not pathlib.Path(file).exists():
         raise FileNotFoundError(f'Environment file {file} not found')
-    
+
     dotenv.load_dotenv(file)
-    
+
     pc_conf.load_config(None, True)
-    
+
     existing_env_check = True
