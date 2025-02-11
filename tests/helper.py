@@ -123,8 +123,6 @@ def configure_nodes(config, stack_id):
             executor.submit(run_command, validator_node_command, pantos_validator_node_dir, validator_node_env_vars),
         ]
         concurrent.futures.wait(futures)
-    
-    wait_for_service_node_to_be_ready()
 
 
 def configure_client(stack_id, instance=1):

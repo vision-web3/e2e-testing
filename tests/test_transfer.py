@@ -8,6 +8,7 @@ from pantos.client.library.entitites import DestinationTransferStatus
 from pantos.common.servicenodes import ServiceNodeTransferStatus
 
 from helper import configure_client, configure_nodes, teardown_environment
+from helper import wait_for_service_node_to_be_ready
 from conftest import configure_existing_environment
 
 test_timeout = int(os.getenv('PYTEST_TIMEOUT', 300))  # 5 minutes
@@ -32,6 +33,7 @@ def setup_module(request, stack_id, worker_id = "gw0"):
     else:
         # Used to check an existing deployment
         configure_existing_environment()
+    wait_for_service_node_to_be_ready()
 
 @pytest.mark.parametrize('receiving_address', ['bnb'], indirect=True)
 def test_retrieve_token_balance(receiving_address):
