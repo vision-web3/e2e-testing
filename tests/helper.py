@@ -43,12 +43,11 @@ def configure_nodes(config, stack_id):
     # Teardown
     if not config:
         print('Tearing down the environment')
-        import subprocess
-        print(">>", subprocess.call(['docker', 'ps']))
         # Dump all the logs
         env_vars = {'STACK_IDENTIFIER': stack_id}
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [
+                executor.submit(run_command, 'docker ps', '', ''),
                 executor.submit(run_command, 'make docker-logs', pantos_validator_node_dir, env_vars),
                 executor.submit(run_command, 'make docker-logs', pantos_service_node_dir, env_vars),
                 executor.submit(run_command, 'make docker-logs', pantos_ethereum_contracts_dir, env_vars)
