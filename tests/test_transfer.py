@@ -34,6 +34,10 @@ def setup_module(request, stack_id, worker_id = "gw0"):
         # Used to check an existing deployment
         configure_existing_environment()
     wait_for_service_node_to_be_ready()
+    print("BIDS:", service_node_bids = pc.retrieve_service_node_bids(pc.Blockchain.ETHEREUM,
+                                                          pc.Blockchain.BNB_CHAIN, False))
+    print("BIDS:", service_node_bids = pc.retrieve_service_node_bids(pc.Blockchain.ETHEREUM,
+                                                          pc.Blockchain.BNB_CHAIN))
 
 @pytest.mark.parametrize('receiving_address', ['bnb'], indirect=True)
 def test_retrieve_token_balance(receiving_address):

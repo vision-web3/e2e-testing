@@ -140,5 +140,5 @@ def configure_client(stack_id, instance=1):
             if not pathlib.Path(env_file).exists():
                 raise FileNotFoundError(f'Environment file {env_file} not found')
             dotenv.load_dotenv(env_file)
-        
+
     pc_conf.load_config(None, True)
