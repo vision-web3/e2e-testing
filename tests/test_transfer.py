@@ -32,6 +32,8 @@ def setup_module(request, stack_id, worker_id = "gw0"):
     else:
         # Used to check an existing deployment
         configure_existing_environment()
+        import subprocess
+        print(subprocess.call(['docker', 'ps']))
 
 @pytest.mark.parametrize('receiving_address', ['bnb'], indirect=True)
 def test_retrieve_token_balance(receiving_address):
