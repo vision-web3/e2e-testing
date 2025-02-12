@@ -14,14 +14,12 @@ def check_service_nodes():
     current_dir = os.path.dirname(__file__)
     file_path = os.path.join(current_dir, "hub_abi.txt")
 
-    with open(file_path, "r") as f:
-        hub_abi = f.read()
-
+    abi = '[{"type":"function","name":"getServiceNodes","inputs":[],"outputs":[{"name":"","type":"address[]","internalType":"address[]"}],"stateMutability":"view"}'
     ethereum_hub_address = os.getenv('ETHEREUM_HUB')
     provider_url = os.getenv('ETHEREUM_PROVIDER')
     
     w3 = web3.Web3(web3.HTTPProvider(provider_url))
-    hub_contract = w3.eth.contract(address=ethereum_hub_address, abi=hub_abi)
+    hub_contract = w3.eth.contract(address=ethereum_hub_address, abi=abi)
 
     max_tries = 100
     while True:
