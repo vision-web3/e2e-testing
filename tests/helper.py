@@ -96,7 +96,6 @@ def configure_nodes(config, stack_id):
         env_vars = {'STACK_IDENTIFIER': stack_id}
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [
-                executor.submit(run_command, 'docker ps', None, {}),
                 executor.submit(run_command, 'make docker-logs', pantos_validator_node_dir, env_vars),
                 executor.submit(run_command, 'make docker-logs', pantos_service_node_dir, env_vars),
                 executor.submit(run_command, 'make docker-logs', pantos_ethereum_contracts_dir, env_vars)
@@ -159,15 +158,11 @@ def configure_client(stack_id, instance=1):
     # TODO: Return one library instance per instance from the stack id
     for file in [f'{contracts_dir}/data/*{stack_id}-{instance}/*/all.env', f'{current_dir}/../base.env']:
         resolved_path = glob.glob(file)
-        print('Resolved path:', resolved_path)
         if not resolved_path:
             raise FileNotFoundError(f'Environment path {file} not found')
         for env_file in resolved_path:
             if not pathlib.Path(env_file).exists():
                 raise FileNotFoundError(f'Environment file {env_file} not found')
             dotenv.load_dotenv(env_file)
-            # with open(env_file, 'r') as file_stuff:
-            #     content = file_stuff.read()
-            #     print(f'Loaded environment file {env_file} with content: {content}')
     
     pc_conf.load_config(None, True)

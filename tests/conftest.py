@@ -96,9 +96,6 @@ def configure_existing_environment():
         raise FileNotFoundError(f'Environment file {file} not found')
 
     dotenv.load_dotenv(file)
-    with open(file, 'r') as env_file:
-        content = env_file.read()
-        print(f'Loaded environment file {file} with content: {content}')
 
     pc_conf.load_config(None, True)
 

@@ -37,10 +37,6 @@ def setup_module(request, stack_id, worker_id = "gw0"):
         configure_existing_environment()
     wait_for_service_node_to_be_ready()
     check_service_nodes()
-    print("BIDS:", pc.retrieve_service_node_bids(pc.Blockchain.ETHEREUM,
-                                                          pc.Blockchain.BNB_CHAIN, False))
-    print("BIDS:", pc.retrieve_service_node_bids(pc.Blockchain.ETHEREUM,
-                                                          pc.Blockchain.BNB_CHAIN))
 
 
 @pytest.mark.parametrize('receiving_address', ['bnb'], indirect=True)
