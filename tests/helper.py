@@ -2,9 +2,58 @@ import glob
 import os
 import pathlib
 import subprocess
+import requests
+import time
 import dotenv
 import pantos.client.library.configuration as pc_conf
 import concurrent.futures
+import web3
+
+
+def check_service_nodes():
+    current_dir = os.path.dirname(__file__)
+    file_path = os.path.join(current_dir, "hub_abi.txt")
+
+    abi = '[{"type":"function","name":"getServiceNodes","inputs":[],"outputs":[{"name":"","type":"address[]","internalType":"address[]"}],"stateMutability":"view"}]'
+    ethereum_hub_address = os.getenv('ETHEREUM_HUB')
+    provider_url = os.getenv('ETHEREUM_PROVIDER')
+    
+    w3 = web3.Web3(web3.HTTPProvider(provider_url))
+    hub_contract = w3.eth.contract(address=ethereum_hub_address, abi=abi)
+
+    max_tries = 100
+    while True:
+        print("Checking for registered service nodes")
+        service_nodes = hub_contract.functions.getServiceNodes().call()
+        if len(service_nodes) > 0:
+            print(f"Service Nodes: {service_nodes}")
+            break
+        max_tries -= 1
+        print(f"No service nodes found")
+        if max_tries == 0:
+            raise TimeoutError('Service node did not start in time')
+        time.sleep(5)
+
+def wait_for_service_node_to_be_ready():
+    max_tries = 100
+    while True:
+        max_tries -= 1
+        if max_tries == 0:
+            raise TimeoutError('Service node did not start in time')
+        try:
+            response = requests.get('http://localhost:8081/bids?source_blockchain=0&destination_blockchain=1', timeout=60)
+        except requests.exceptions.ConnectionError:
+            print('Service node not ready yet')
+            time.sleep(5)
+            continue
+        # response.raise_for_status()
+        print(response.status_code)
+        bids = response.json()
+        if len(bids) > 0:
+            print('Service node is ready')
+            break
+        time.sleep(5)
+
 
 def teardown_environment(stack_id = ''):
     configure_nodes({}, stack_id)    
@@ -37,9 +86,9 @@ def configure_nodes(config, stack_id):
 
     if not pantos_ethereum_contracts_dir:
         raise EnvironmentError('PANTOS_ETHEREUM_CONTRACTS environment variable not set')
-    
+
     print(f'Configuring tests with: Ethereum Contracts {pantos_ethereum_contracts_version}, Service Node {pantos_service_node_version}, Validator Node {pantos_validator_node_version}')
-    
+
     # Teardown
     if not config:
         print('Tearing down the environment')
@@ -99,7 +148,8 @@ def configure_nodes(config, stack_id):
         ]
         concurrent.futures.wait(futures)
 
-def configure_client(stack_id, instance = 1):
+
+def configure_client(stack_id, instance=1):
     if not os.getenv('PANTOS_ETHEREUM_CONTRACTS'):
         raise EnvironmentError('PANTOS_ETHEREUM_CONTRACTS environment variable not set')
     contracts_dir = os.getenv('PANTOS_ETHEREUM_CONTRACTS')
@@ -114,5 +164,5 @@ def configure_client(stack_id, instance = 1):
             if not pathlib.Path(env_file).exists():
                 raise FileNotFoundError(f'Environment file {env_file} not found')
             dotenv.load_dotenv(env_file)
-        
+    
     pc_conf.load_config(None, True)
