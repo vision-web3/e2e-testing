@@ -154,5 +154,6 @@ def configure_client(stack_id, instance=1):
             with open(env_file, 'r') as file_stuff:
                 content = file_stuff.read()
                 print(f'Loaded environment file {env_file} with content: {content}')
-
+    ethereum_hub_address = os.getenv('ETHEREUM_HUB')
+    print(f"Ethereum hub address: {ethereum_hub_address}")
     pc_conf.load_config(None, True)
