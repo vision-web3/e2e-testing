@@ -10,14 +10,17 @@ import concurrent.futures
 import web3
 
 
-# def check_service_nodes():
-#     CURRENT_DIR = os.path.dirname(__file__)
-#     file_path = os.path.join(CURRENT_DIR, "hub_abi.txt")
+def check_service_nodes():
+    current_dir = os.path.dirname(__file__)
+    file_path = os.path.join(current_dir, "hub_abi.txt")
 
-#     with open(file_path, "r") as f:
-#         content = f.read()
+    with open(file_path, "r") as f:
+        content = f.read()
 
-#     hub_contract = w3.eth.contract(address=addresses["hub_proxy"], abi=hub_abi)
+    ethereum_hub_address = os.getenv('ETHEREUM_HUB')
+    # print(f"Ethereum hub address: {ethereum_hub_address}")
+    hub_contract = w3.eth.contract(address=ethereum_hub_address, abi=hub_abi)
+    print('Service Nodes:', hub_contract.functions.getServiceNodes().call())
 
 def wait_for_service_node_to_be_ready():
     max_tries = 100
@@ -151,9 +154,8 @@ def configure_client(stack_id, instance=1):
             if not pathlib.Path(env_file).exists():
                 raise FileNotFoundError(f'Environment file {env_file} not found')
             dotenv.load_dotenv(env_file)
-            with open(env_file, 'r') as file_stuff:
-                content = file_stuff.read()
-                print(f'Loaded environment file {env_file} with content: {content}')
-    ethereum_hub_address = os.getenv('ETHEREUM_HUB')
-    print(f"Ethereum hub address: {ethereum_hub_address}")
+            # with open(env_file, 'r') as file_stuff:
+            #     content = file_stuff.read()
+            #     print(f'Loaded environment file {env_file} with content: {content}')
+    
     pc_conf.load_config(None, True)
