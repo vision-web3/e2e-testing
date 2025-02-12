@@ -7,7 +7,17 @@ import time
 import dotenv
 import pantos.client.library.configuration as pc_conf
 import concurrent.futures
+import web3
 
+
+# def check_service_nodes():
+#     CURRENT_DIR = os.path.dirname(__file__)
+#     file_path = os.path.join(CURRENT_DIR, "hub_abi.txt")
+
+#     with open(file_path, "r") as f:
+#         content = f.read()
+
+#     hub_contract = w3.eth.contract(address=addresses["hub_proxy"], abi=hub_abi)
 
 def wait_for_service_node_to_be_ready():
     max_tries = 100
@@ -140,5 +150,8 @@ def configure_client(stack_id, instance=1):
             if not pathlib.Path(env_file).exists():
                 raise FileNotFoundError(f'Environment file {env_file} not found')
             dotenv.load_dotenv(env_file)
+            with open(file, 'r') as env_file:
+                content = env_file.read()
+                print(f'Loaded environment file {file} with content: {content}')
 
     pc_conf.load_config(None, True)
