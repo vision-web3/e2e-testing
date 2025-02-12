@@ -19,10 +19,22 @@ def check_service_nodes():
 
     ethereum_hub_address = os.getenv('ETHEREUM_HUB')
     provider_url = os.getenv('ETHEREUM_PROVIDER')
-    # print(f"Ethereum hub address: {ethereum_hub_address}")
+    
     w3 = web3.Web3(web3.HTTPProvider(provider_url))
     hub_contract = w3.eth.contract(address=ethereum_hub_address, abi=hub_abi)
-    print('Service Nodes:', hub_contract.functions.getServiceNodes().call())
+
+    max_tries = 100
+    while True:
+        print("Checking for registered service nodes")
+        service_nodes = hub_contract.functions.getServiceNodes().call()
+        if len(service_nodes) > 0:
+            print(f"Service Nodes: {service_nodes}")
+            break
+        max_tries -= 1
+        print(f"No service nodes found")
+        if max_tries == 0:
+            raise TimeoutError('Service node did not start in time')
+        time.sleep(5)
 
 def wait_for_service_node_to_be_ready():
     max_tries = 100
