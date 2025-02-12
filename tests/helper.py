@@ -144,6 +144,7 @@ def configure_client(stack_id, instance=1):
     # TODO: Return one library instance per instance from the stack id
     for file in [f'{contracts_dir}/data/*{stack_id}-{instance}/*/all.env', f'{current_dir}/../base.env']:
         resolved_path = glob.glob(file)
+        print('Resolved path:', resolved_path)
         if not resolved_path:
             raise FileNotFoundError(f'Environment path {file} not found')
         for env_file in resolved_path:
