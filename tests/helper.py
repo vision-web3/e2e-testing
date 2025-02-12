@@ -18,7 +18,9 @@ def check_service_nodes():
         content = f.read()
 
     ethereum_hub_address = os.getenv('ETHEREUM_HUB')
+    provider_url = os.getenv('ETHEREUM_PROVIDER')
     # print(f"Ethereum hub address: {ethereum_hub_address}")
+    w3 = web3.Web3(web3.HTTPProvider(provider_url))
     hub_contract = w3.eth.contract(address=ethereum_hub_address, abi=hub_abi)
     print('Service Nodes:', hub_contract.functions.getServiceNodes().call())
 
