@@ -14,7 +14,7 @@ def check_service_nodes():
     current_dir = os.path.dirname(__file__)
     file_path = os.path.join(current_dir, "hub_abi.txt")
 
-    abi = '[{"type":"function","name":"getServiceNodes","inputs":[],"outputs":[{"name":"","type":"address[]","internalType":"address[]"}],"stateMutability":"view"}'
+    abi = '[{"type":"function","name":"getServiceNodes","inputs":[],"outputs":[{"name":"","type":"address[]","internalType":"address[]"}],"stateMutability":"view"}]'
     ethereum_hub_address = os.getenv('ETHEREUM_HUB')
     provider_url = os.getenv('ETHEREUM_PROVIDER')
     
