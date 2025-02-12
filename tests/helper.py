@@ -10,7 +10,7 @@ import concurrent.futures
 import web3
 
 
-def check_service_nodes(stack_id):
+def check_service_nodes():
     current_dir = os.path.dirname(__file__)
     file_path = os.path.join(current_dir, "hub_abi.txt")
 
