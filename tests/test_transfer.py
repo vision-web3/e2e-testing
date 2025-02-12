@@ -36,7 +36,7 @@ def setup_module(request, stack_id, worker_id = "gw0"):
         # Used to check an existing deployment
         configure_existing_environment()
     wait_for_service_node_to_be_ready()
-    check_service_nodes()
+    check_service_nodes(stack_id)
 
 
 @pytest.mark.parametrize('receiving_address', ['bnb'], indirect=True)

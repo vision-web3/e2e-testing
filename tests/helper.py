@@ -10,14 +10,14 @@ import concurrent.futures
 import web3
 
 
-def get_docker_logs():
+def get_docker_logs(stack_id):
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [
-            executor.submit(run_command, 'docker logs pantosio/service-node-worker:local ', None, {}),
+            executor.submit(run_command, f'docker logs stack-service-node-{stack_id}-1-worker-1 ', None, {}),
         ]
         concurrent.futures.wait(futures)
 
-def check_service_nodes():
+def check_service_nodes(stack_id):
     current_dir = os.path.dirname(__file__)
     file_path = os.path.join(current_dir, "hub_abi.txt")
 
@@ -37,7 +37,7 @@ def check_service_nodes():
             break
         max_tries -= 1
         print(f"No service nodes found")
-        get_docker_logs()
+        get_docker_logs(stack_id)
         if max_tries == 0:
             raise TimeoutError('Service node did not start in time')
         time.sleep(5)
