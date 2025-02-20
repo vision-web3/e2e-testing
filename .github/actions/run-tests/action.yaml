@@ -50,9 +50,9 @@ runs:
       with:
         path: ${{ env.VISION_E2E_TESTS }}
         repository: vision-web3-foundation/e2e-testing
-        ref: ${{ github.repository == 'vision-io/e2e-testing' && github.ref || 'main' }}
+        ref: ${{ github.repository == 'vision-web3-foundation/e2e-testing' && github.ref || 'main' }}
 
-    - uses: vision-io/ci-workflows/.github/actions/install-python-deps@v1
+    - uses: vision-web3-foundation/ci-workflows/.github/actions/install-python-deps@v1
       with:
         working-directory: ${{ env.VISION_E2E_TESTS }}
 
