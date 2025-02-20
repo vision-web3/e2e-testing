@@ -29,10 +29,6 @@ inputs:
     description: 'Skip the setup steps'
     required: false
     default: false
-  #!!!! Remove before going open
-  token: 
-    description: 'Token for checking out other repos'
-    required: true
 
 runs:
   using: 'composite'
@@ -71,7 +67,7 @@ runs:
         repository: vision-web3-foundation/ethereum-contracts
         path: ${{ env.VISION_ETHEREUM_CONTRACTS }}
         # !!!! Remove before going open
-        token: ${{ env.GH_TOKEN }}
+        token: ${{ secrets.GH_TOKEN }}
         sparse-checkout: |
           docker-compose.yml
           docker-compose.ci.yml
@@ -84,7 +80,7 @@ runs:
         repository: vision-web3-foundation/servicenode
         path: ${{ env.VISION_SERVICE_NODE }}
         # !!!! Remove before going open
-        token: ${{ env.GH_TOKEN }}
+        token: ${{ secrets.GH_TOKEN }}
         sparse-checkout: |
           docker-compose.yml
           docker-compose.override.yml
@@ -97,7 +93,7 @@ runs:
         repository: vision-web3-foundation/validatornode
         path: ${{ env.VISION_VALIDATOR_NODE }}
         # !!!! Remove before going open
-        token: ${{ env.GH_TOKEN }}
+        token: ${{ secrets.GH_TOKEN }}
         sparse-checkout: |
           docker-compose.yml
           docker-compose.override.yml

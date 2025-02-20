@@ -15,4 +15,4 @@ jobs:
         uses: jenseng/dynamic-uses@v1
         with:
           uses: vision-web3-foundation/e2e-testing/.github/actions/run-tests@${{ github.repository == 'vision-web3-foundation/e2e-testing' && github.ref || 'main' }}
-          with: '{ "token": ${{ secrets.GH_TOKEN }} }'
+          # with: '{ "token": ${{ secrets.GH_TOKEN }} }'
