@@ -5,7 +5,7 @@ import subprocess
 import requests
 import time
 import dotenv
-import pantos.client.library.configuration as pc_conf
+import vision.client.library.configuration as pc_conf
 import concurrent.futures
 import web3
 
@@ -71,23 +71,23 @@ def run_command(command, cwd, env_vars):
         raise subprocess.CalledProcessError(process.returncode, command)
 
 def configure_nodes(config, stack_id):
-    pantos_ethereum_contracts_dir = os.getenv('PANTOS_ETHEREUM_CONTRACTS')
-    pantos_ethereum_contracts_version = os.getenv('PANTOS_ETHEREUM_CONTRACTS_VERSION', 'development')
-    if not pantos_ethereum_contracts_version or pantos_ethereum_contracts_version == '':
-        pantos_ethereum_contracts_version = 'development'
-    pantos_service_node_dir = os.getenv('PANTOS_SERVICE_NODE')
-    pantos_service_node_version = os.getenv('PANTOS_SERVICE_NODE_VERSION', 'development')
-    if not pantos_service_node_version or pantos_service_node_version == '':
-        pantos_service_node_version = 'development'
-    pantos_validator_node_dir = os.getenv('PANTOS_VALIDATOR_NODE')
-    pantos_validator_node_version = os.getenv('PANTOS_VALIDATOR_NODE_VERSION', 'development')
-    if not pantos_validator_node_version or pantos_validator_node_version == '':
-        pantos_validator_node_version = 'development'
+    vision_ethereum_contracts_dir = os.getenv('VISION_ETHEREUM_CONTRACTS')
+    vision_ethereum_contracts_version = os.getenv('VISION_ETHEREUM_CONTRACTS_VERSION', 'development')
+    if not vision_ethereum_contracts_version or vision_ethereum_contracts_version == '':
+        vision_ethereum_contracts_version = 'development'
+    vision_service_node_dir = os.getenv('VISION_SERVICE_NODE')
+    vision_service_node_version = os.getenv('VISION_SERVICE_NODE_VERSION', 'development')
+    if not vision_service_node_version or vision_service_node_version == '':
+        vision_service_node_version = 'development'
+    vision_validator_node_dir = os.getenv('VISION_VALIDATOR_NODE')
+    vision_validator_node_version = os.getenv('VISION_VALIDATOR_NODE_VERSION', 'development')
+    if not vision_validator_node_version or vision_validator_node_version == '':
+        vision_validator_node_version = 'development'
 
-    if not pantos_ethereum_contracts_dir:
-        raise EnvironmentError('PANTOS_ETHEREUM_CONTRACTS environment variable not set')
+    if not vision_ethereum_contracts_dir:
+        raise EnvironmentError('VISION_ETHEREUM_CONTRACTS environment variable not set')
 
-    print(f'Configuring tests with: Ethereum Contracts {pantos_ethereum_contracts_version}, Service Node {pantos_service_node_version}, Validator Node {pantos_validator_node_version}')
+    print(f'Configuring tests with: Ethereum Contracts {vision_ethereum_contracts_version}, Service Node {vision_service_node_version}, Validator Node {vision_validator_node_version}')
 
     # Teardown
     if not config:
@@ -96,18 +96,18 @@ def configure_nodes(config, stack_id):
         env_vars = {'STACK_IDENTIFIER': stack_id}
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [
-                executor.submit(run_command, 'make docker-logs', pantos_validator_node_dir, env_vars),
-                executor.submit(run_command, 'make docker-logs', pantos_service_node_dir, env_vars),
-                executor.submit(run_command, 'make docker-logs', pantos_ethereum_contracts_dir, env_vars)
+                executor.submit(run_command, 'make docker-logs', vision_validator_node_dir, env_vars),
+                executor.submit(run_command, 'make docker-logs', vision_service_node_dir, env_vars),
+                executor.submit(run_command, 'make docker-logs', vision_ethereum_contracts_dir, env_vars)
             ]
             concurrent.futures.wait(futures)
 
         # Remove the containers
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = [
-                executor.submit(run_command, 'make docker-remove', pantos_validator_node_dir, env_vars),
-                executor.submit(run_command, 'make docker-remove', pantos_service_node_dir, env_vars),
-                executor.submit(run_command, 'make docker-remove', pantos_ethereum_contracts_dir, env_vars)
+                executor.submit(run_command, 'make docker-remove', vision_validator_node_dir, env_vars),
+                executor.submit(run_command, 'make docker-remove', vision_service_node_dir, env_vars),
+                executor.submit(run_command, 'make docker-remove', vision_ethereum_contracts_dir, env_vars)
             ]
             concurrent.futures.wait(futures)
 
@@ -116,18 +116,18 @@ def configure_nodes(config, stack_id):
     # Configure Ethereum contracts
     if 'ethereum_contracts' in config:
         ethereum_contracts_command = 'make docker-local'
-        ethereum_contracts_env_vars = {'DOCKER_TAG': pantos_ethereum_contracts_version, 'STACK_IDENTIFIER': stack_id, 'ARGS': '--no-build'}
+        ethereum_contracts_env_vars = {'DOCKER_TAG': vision_ethereum_contracts_version, 'STACK_IDENTIFIER': stack_id, 'ARGS': '--no-build'}
     else:
         ethereum_contracts_command = 'make docker-remove'
         ethereum_contracts_env_vars = {'STACK_IDENTIFIER': stack_id}
-    run_command(ethereum_contracts_command, pantos_ethereum_contracts_dir, ethereum_contracts_env_vars)
+    run_command(ethereum_contracts_command, vision_ethereum_contracts_dir, ethereum_contracts_env_vars)
 
     # Configure Service Node
     if 'service_node' in config:
         instance_count = config['service_node'].get('instance_count', 1)
         service_node_command = f'make docker INSTANCE_COUNT="{instance_count}"'
         # TODO: Allow service nodes to support multiple networks?
-        service_node_env_vars = {'DOCKER_TAG': pantos_service_node_version, 'STACK_IDENTIFIER': stack_id, 'ETHEREUM_NETWORK': '1', 'NO_BUILD': 'true'}
+        service_node_env_vars = {'DOCKER_TAG': vision_service_node_version, 'STACK_IDENTIFIER': stack_id, 'ETHEREUM_NETWORK': '1', 'NO_BUILD': 'true'}
     else:
         service_node_command = 'make docker-remove'
         service_node_env_vars = {'STACK_IDENTIFIER': stack_id}
@@ -136,23 +136,23 @@ def configure_nodes(config, stack_id):
     if 'validator_node' in config:
         instance_count = config['validator_node'].get('instance_count', 1)
         validator_node_command = f'make docker INSTANCE_COUNT="{instance_count}"'
-        validator_node_env_vars = {'DOCKER_TAG': pantos_validator_node_version, 'STACK_IDENTIFIER': stack_id, 'ETHEREUM_NETWORK': '1', 'NO_BUILD': 'true'}
+        validator_node_env_vars = {'DOCKER_TAG': vision_validator_node_version, 'STACK_IDENTIFIER': stack_id, 'ETHEREUM_NETWORK': '1', 'NO_BUILD': 'true'}
     else:
         validator_node_command = 'make docker-remove'
         validator_node_env_vars = {'STACK_IDENTIFIER': stack_id}
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [
-            executor.submit(run_command, service_node_command, pantos_service_node_dir, service_node_env_vars),
-            executor.submit(run_command, validator_node_command, pantos_validator_node_dir, validator_node_env_vars),
+            executor.submit(run_command, service_node_command, vision_service_node_dir, service_node_env_vars),
+            executor.submit(run_command, validator_node_command, vision_validator_node_dir, validator_node_env_vars),
         ]
         concurrent.futures.wait(futures)
 
 
 def configure_client(stack_id, instance=1):
-    if not os.getenv('PANTOS_ETHEREUM_CONTRACTS'):
-        raise EnvironmentError('PANTOS_ETHEREUM_CONTRACTS environment variable not set')
-    contracts_dir = os.getenv('PANTOS_ETHEREUM_CONTRACTS')
+    if not os.getenv('VISION_ETHEREUM_CONTRACTS'):
+        raise EnvironmentError('VISION_ETHEREUM_CONTRACTS environment variable not set')
+    contracts_dir = os.getenv('VISION_ETHEREUM_CONTRACTS')
     current_dir = os.path.dirname(os.path.realpath(__file__))
 
     # TODO: Return one library instance per instance from the stack id

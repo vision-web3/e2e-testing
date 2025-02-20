@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "e2e-testing"
 version = "0.1.0"
-description = "Pantos End to End tests"
-authors = ["Pantos GmbH <contact@pantos.io>"]
+description = "Vision End to End tests"
+authors = ["Vision GmbH <contact@vision.io>"]
 license = "GPL-3.0-only"
 readme = "README.md"
 
@@ -15,7 +15,7 @@ python-dotenv = "^1.0.1"
 bandit = "1.7.9"
 flake8 = "7.1.0"
 isort = "5.13.2"
-mypy = "1.10.1"
+mypy = "1.0.1"
 types-pyyaml = "6.0.12.20240311"
 types-requests = "2.32.0.20240712"
 yapf = "0.40.2"
@@ -25,7 +25,7 @@ pre-commit = "3.7.1"
 
 [tool.poetry.dependencies]
 python = "^3.13"
-pantos-client-library = "4.0.0"
+vision-client-library = "0.1.0"
 pytest-ordering = "^0.6"
 pytest-xdist = "^3.6.1"
 pytest-timeout = "^2.3.1"

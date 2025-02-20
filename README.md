@@ -1,6 +1,6 @@
 # e2e-testing
 
-A collection of functionalities to test Pantos deployments end-to-end (E2E).
+A collection of functionalities to test Vision deployments end-to-end (E2E).
 
 ## Prerequisites
 
@@ -25,7 +25,7 @@ make test
 You can run the tests in environment-check mode by defining the following variables:
 
 ```shell
-PANTOS_ENV_FILE=<path to the configuration file>
+VISION_ENV_FILE=<path to the configuration file>
 <CHAIN>_PRIVATE_KEY=<either a valid path or the value of the keystore>
 <CHAIN>_RECEIVING_ADDRESS=<receiving address for the tests on a specific chain, e.g., ETHEREUM>
 ```

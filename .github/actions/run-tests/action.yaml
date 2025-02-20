@@ -1,5 +1,5 @@
 name: Run E2E Tests
-description: Run end-to-end tests for Pantos
+description: Run end-to-end tests for Vision
 inputs:
   ethereum-contracts-version:
     description: 'The version of the ethereum-contracts repository to use'
@@ -37,35 +37,37 @@ runs:
     - name: Set environment variables
       shell: bash
       run: |
-        echo "PANTOS_ETHEREUM_CONTRACTS=${{ inputs.ethereum-contracts-path }}" >> $GITHUB_ENV
-        echo "PANTOS_SERVICE_NODE=${{ inputs.servicenode-path }}" >> $GITHUB_ENV
-        echo "PANTOS_VALIDATOR_NODE=${{ inputs.validatornode-path }}" >> $GITHUB_ENV
-        echo "PANTOS_E2E_TESTS=${{ github.workspace }}/e2e-tests" >> $GITHUB_ENV
+        echo "VISION_ETHEREUM_CONTRACTS=${{ inputs.ethereum-contracts-path }}" >> $GITHUB_ENV
+        echo "VISION_SERVICE_NODE=${{ inputs.servicenode-path }}" >> $GITHUB_ENV
+        echo "VISION_VALIDATOR_NODE=${{ inputs.validatornode-path }}" >> $GITHUB_ENV
+        echo "VISION_E2E_TESTS=${{ github.workspace }}/e2e-tests" >> $GITHUB_ENV
 
     - uses: actions/checkout@v4
       with:
-        path: ${{ env.PANTOS_E2E_TESTS }}
-        repository: pantos-io/e2e-testing
-        ref: ${{ github.repository == 'pantos-io/e2e-testing' && github.ref || 'main' }}
+        path: ${{ env.VISION_E2E_TESTS }}
+        repository: vision-web3-foundation/e2e-testing
+        ref: ${{ github.repository == 'vision-io/e2e-testing' && github.ref || 'main' }}
 
-    - uses: pantos-io/ci-workflows/.github/actions/install-python-deps@v1
+    - uses: vision-io/ci-workflows/.github/actions/install-python-deps@v1
       with:
-        working-directory: ${{ env.PANTOS_E2E_TESTS }}
+        working-directory: ${{ env.VISION_E2E_TESTS }}
 
     - name: Check for folder existence
       if: inputs.no-setup == 'false'
       shell: bash
       id: check-folder
       run: |
-        echo "PANTOS_ETHEREUM_CONTRACTS_EXISTS=$(test -d ${{ env.PANTOS_ETHEREUM_CONTRACTS }} && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "PANTOS_SERVICE_NODE_EXISTS=$(test -d ${{ env.PANTOS_SERVICE_NODE }} && echo true || echo false)" >> $GITHUB_OUTPUT
-        echo "PANTOS_VALIDATOR_NODE_EXISTS=$(test -d ${{ env.PANTOS_VALIDATOR_NODE }} && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "VISION_ETHEREUM_CONTRACTS_EXISTS=$(test -d ${{ env.VISION_ETHEREUM_CONTRACTS }} && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "VISION_SERVICE_NODE_EXISTS=$(test -d ${{ env.VISION_SERVICE_NODE }} && echo true || echo false)" >> $GITHUB_OUTPUT
+        echo "VISION_VALIDATOR_NODE_EXISTS=$(test -d ${{ env.VISION_VALIDATOR_NODE }} && echo true || echo false)" >> $GITHUB_OUTPUT
 
     - uses: actions/checkout@v4
-      if: inputs.no-setup == 'false' && steps.check-folder.outputs.PANTOS_ETHEREUM_CONTRACTS_EXISTS == 'false'
+      if: inputs.no-setup == 'false' && steps.check-folder.outputs.VISION_ETHEREUM_CONTRACTS_EXISTS == 'false'
       with:
-        repository: pantos-io/ethereum-contracts
-        path: ${{ env.PANTOS_ETHEREUM_CONTRACTS }}
+        repository: vision-web3-foundation/ethereum-contracts
+        path: ${{ env.VISION_ETHEREUM_CONTRACTS }}
+        # !!!! Remove before going open
+        token: ${{ secrets.GH_TOKEN }}
         sparse-checkout: |
           docker-compose.yml
           docker-compose.ci.yml
@@ -73,10 +75,12 @@ runs:
           Makefile
 
     - uses: actions/checkout@v4
-      if: inputs.no-setup == 'false' && steps.check-folder.outputs.PANTOS_SERVICE_NODE_EXISTS == 'false'
+      if: inputs.no-setup == 'false' && steps.check-folder.outputs.VISION_SERVICE_NODE_EXISTS == 'false'
       with:
-        repository: pantos-io/servicenode
-        path: ${{ env.PANTOS_SERVICE_NODE }}
+        repository: vision-web3-foundation/servicenode
+        path: ${{ env.VISION_SERVICE_NODE }}
+        # !!!! Remove before going open
+        token: ${{ secrets.GH_TOKEN }}
         sparse-checkout: |
           docker-compose.yml
           docker-compose.override.yml
@@ -84,10 +88,12 @@ runs:
           Makefile
 
     - uses: actions/checkout@v4
-      if: inputs.no-setup == 'false' && steps.check-folder.outputs.PANTOS_VALIDATOR_NODE_EXISTS == 'false'
+      if: inputs.no-setup == 'false' && steps.check-folder.outputs.VISION_VALIDATOR_NODE_EXISTS == 'false'
       with:
-        repository: pantos-io/validatornode
-        path: ${{ env.PANTOS_VALIDATOR_NODE }}
+        repository: vision-web3-foundation/validatornode
+        path: ${{ env.VISION_VALIDATOR_NODE }}
+        # !!!! Remove before going open
+        token: ${{ secrets.GH_TOKEN }}
         sparse-checkout: |
           docker-compose.yml
           docker-compose.override.yml
@@ -100,7 +106,7 @@ runs:
       run: |
         ssh-keygen -t ed25519 -f signer_key.pem -N ''
         chmod 777 signer_key.pem
-      working-directory: ${{ env.PANTOS_SERVICE_NODE }}
+      working-directory: ${{ env.VISION_SERVICE_NODE }}
 
     - name: Set up QEMU
       if: inputs.no-setup == 'false'
@@ -128,15 +134,15 @@ runs:
         cat /etc/docker/daemon.json
         sudo systemctl reload docker
         make check-swarm-init
-      working-directory: ${{ env.PANTOS_E2E_TESTS }}
+      working-directory: ${{ env.VISION_E2E_TESTS }}
 
     - name: Run Tests
       shell: bash
       run: |
         make test
-      working-directory: ${{ env.PANTOS_E2E_TESTS }}
+      working-directory: ${{ env.VISION_E2E_TESTS }}
       env:
-        PANTOS_ETHEREUM_CONTRACTS_VERSION: ${{ inputs.ethereum-contracts-version }}
-        PANTOS_SERVICE_NODE_VERSION: ${{ inputs.servicenode-version }}
-        PANTOS_VALIDATOR_NODE_VERSION: ${{ inputs.validatornode-version }}
+        VISION_ETHEREUM_CONTRACTS_VERSION: ${{ inputs.ethereum-contracts-version }}
+        VISION_SERVICE_NODE_VERSION: ${{ inputs.servicenode-version }}
+        VISION_VALIDATOR_NODE_VERSION: ${{ inputs.validatornode-version }}
         CI: true

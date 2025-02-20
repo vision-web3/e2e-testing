@@ -6,8 +6,8 @@ import string
 import sys
 import dotenv
 import pytest
-import pantos.client as pc
-import pantos.client.library.configuration as pc_conf
+import vision.client as pc
+import vision.client.library.configuration as pc_conf
 
 if os.getenv('DEBUG', 'false').lower() == 'true':
     sys.stdout = sys.stderr
@@ -67,7 +67,7 @@ def keystore(request, stack_id):
             # Assume it's the keystore on its own
             return (resolved_path, network)
 
-    contracts_dir = os.getenv('PANTOS_ETHEREUM_CONTRACTS')
+    contracts_dir = os.getenv('VISION_ETHEREUM_CONTRACTS')
     file = f'{contracts_dir}/data/*{stack_id}-1/{network}/keystore'
     resolved_path = glob.glob(file)
     if not resolved_path:
@@ -89,9 +89,9 @@ def private_key(keystore):
 
 def configure_existing_environment():
     global existing_env_check
-    if not os.getenv('PANTOS_ENV_FILE'):
-        raise EnvironmentError('PANTOS_ENV_FILE environment variable not set')
-    file = os.getenv('PANTOS_ENV_FILE')
+    if not os.getenv('VISION_ENV_FILE'):
+        raise EnvironmentError('VISION_ENV_FILE environment variable not set')
+    file = os.getenv('VISION_ENV_FILE')
     if not pathlib.Path(file).exists():
         raise FileNotFoundError(f'Environment file {file} not found')
 
