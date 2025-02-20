@@ -32,8 +32,7 @@ inputs:
   #!!!! Remove before going open
   token: 
     description: 'Token for checking out other repos'
-    required: false
-    default: ${{ secrets.GH_TOKEN }}
+    required: true
 
 runs:
   using: 'composite'
