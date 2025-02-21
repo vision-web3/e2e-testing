@@ -66,4 +66,4 @@ coverage:
     else \
         LOG_LEVEL=""; \
     fi; \
-	poetry run pytest -r -o log_cli=True $$LOG_LEVEL -n ${MAX_CONCURRENCY} --cov-report term-missing --cov=pantos tests
+	poetry run pytest -r -o log_cli=True $$LOG_LEVEL -n ${MAX_CONCURRENCY} --cov-report term-missing --cov=vision tests
