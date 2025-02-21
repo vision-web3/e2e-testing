@@ -49,6 +49,8 @@ runs:
         path: ${{ env.VISION_E2E_TESTS }}
         repository: vision-web3-foundation/e2e-testing
         ref: ${{ github.repository == 'vision-web3-foundation/e2e-testing' && github.ref || 'main' }}
+        # !!!! Remove before going open
+        token: ${{ inputs.token }}
 
     - uses: vision-web3-foundation/ci-workflows/.github/actions/install-python-deps@v1
       with:
