@@ -49,8 +49,6 @@ runs:
         path: ${{ env.VISION_E2E_TESTS }}
         repository: vision-web3-foundation/e2e-testing
         ref: ${{ github.repository == 'vision-web3-foundation/e2e-testing' && github.ref || 'main' }}
-        # !!!! Remove before going open
-        token: ${{ inputs.token }}
 
     - uses: vision-web3-foundation/ci-workflows/.github/actions/install-python-deps@v1
       with:
@@ -70,8 +68,6 @@ runs:
       with:
         repository: vision-web3-foundation/ethereum-contracts
         path: ${{ env.VISION_ETHEREUM_CONTRACTS }}
-        # !!!! Remove before going open
-        token: ${{ inputs.token }}
         sparse-checkout: |
           docker-compose.yml
           docker-compose.ci.yml
@@ -83,8 +79,6 @@ runs:
       with:
         repository: vision-web3-foundation/servicenode
         path: ${{ env.VISION_SERVICE_NODE }}
-        # !!!! Remove before going open
-        token: ${{ inputs.token }}
         sparse-checkout: |
           docker-compose.yml
           docker-compose.override.yml
@@ -96,8 +90,6 @@ runs:
       with:
         repository: vision-web3-foundation/validatornode
         path: ${{ env.VISION_VALIDATOR_NODE }}
-        # !!!! Remove before going open
-        token: ${{ inputs.token }}
         sparse-checkout: |
           docker-compose.yml
           docker-compose.override.yml
