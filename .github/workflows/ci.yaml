@@ -12,6 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Tests
-        uses: jenseng/dynamic-uses@v1
+        uses: jenseng/dynamic-uses@5175289a9a87978dcfcb9cf512b821d23b2a53eb
         with:
-          uses: vision-web3-foundation/e2e-testing/.github/actions/run-tests@${{ github.repository == 'vision-web3-foundation/e2e-testing' && github.ref || 'main' }}
+          uses: vision-web3/e2e-testing/.github/actions/run-tests@${{ github.repository == 'vision-web3/e2e-testing' && github.ref || 'main' }}
