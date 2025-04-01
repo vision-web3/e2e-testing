@@ -2,7 +2,7 @@
 name = "e2e-testing"
 version = "0.1.0"
 description = "Vision End to End tests"
-authors = ["Vision GmbH <contact@vision.io>"]
+authors = ["Vision XXX <contact@XXX>"]
 license = "GPL-3.0-only"
 readme = "README.md"
 
